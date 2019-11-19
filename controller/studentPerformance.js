@@ -2,7 +2,7 @@
 const { test } = require('../Models/candidateAnswer')
 const { user } = require('../Models/userRecord')
 const { examDetail } = require('../Models/examDetail')
-const { questionDetail } = require('../models/question')
+const { questionDetail } = require('../Models/question')
 const studPerformance = async(req, res) => {
     try {
         // debugger
