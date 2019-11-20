@@ -7,27 +7,23 @@ const jwt = require('jsonwebtoken');
 const { SECRET } = require("../config/config")
 const multer = require('multer')
 const path = require('path')
-//const reqPath = path.join(__dirname, '../../frontend/exminer/public/assets');
+const reqPath = path.join(__dirname, '../../../frontend/exminer/public/assets');
 var storage = multer.memoryStorage()
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, 'upload/')
+        if(file.originalname.includes(".xlsx"))
+            callback(null, 'upload/')
+        else
+            callback(null,reqPath)
     },
     filename: function (req, file, callback) {
-        callback(null,file.originalname);
-      }
-});
-const reqPath = path.join(__dirname, '../../../frontend/exminer/public/assets');
-const storage1 = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, reqPath)
-    },
-    filename: function(req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname)
+        callback(null,Date.now()+'-'+file.originalname);
     }
-})
-const upload = multer({storage:storage})
-var upload1 = multer({ limits: {fileSize: 2000000 },storage1: storage1 })
+});
+
+
+// const upload = multer({storage:storage})
+const upload = multer({ limits: {fileSize: 1000000 },storage: storage })
 // var upload = multer({ dest: 'upload/'});
 
 
@@ -121,25 +117,26 @@ module.exports = () => {
 
     //examiner will view questions
     app.get('/exam/:examCode/question', middleware, (req, res) => {
-        console.log(decodeURIComponent(req.params.examCode))
+        //console.log(decodeURIComponent(req.params.examCode))
         Users.getQuestionDetail(req, res)
     })
 
     //get particular question using its ID
     app.get('/exam/question/:id', middleware, (req, res) => {
+        
         console.log(req.params.id)
         Users.fetchQuestionById(req, res)
     })
 
     //examiner will edit questions
-    app.patch('/exam/question/:id', upload1.single('questionImage'), middleware, (req, res) => {
-        console.log('edit pic',req.file)
+    app.patch('/exam/question/:id', upload.single('questionImage'), middleware, (req, res) => {
+        //console.log('edit pic',req.file)
         if (req.file) {
             req.body['questionImage'] = '../public/assets/' + req.file.filename
         } else {
             req.body['questionImage'] = null
         }
-        console.log(req.file)
+        //console.log(req.file)
         Users.editQuestion(req, res)
     })
 
