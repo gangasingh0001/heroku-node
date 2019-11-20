@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const sgMail = require('@sendgrid/mail');
 // const bcrypt = require('bcrypt')
 const bcrypt = require('bcryptjs')
-var SENDGRID_API_KEY = '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'
 
 function decodeToken(req) {
     const token = req.headers.token
