@@ -1,4 +1,4 @@
-const { test } = require('../Models/candidateAnswer')
+const { test } = require('../models/candidateAnswer')
 
 //Check if user have submit the same correct option again and update the database
 const checkExistingRightOption = async(option, qId, studentId, updatedScore) => {

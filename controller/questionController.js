@@ -1,6 +1,6 @@
-const { questionDetail } = require('../Models/question')
-const { test } = require('../Models/candidateAnswer')
-const { examDetail } = require('../Models/examDetail')
+const { questionDetail } = require('../models/question')
+const { test } = require('../models/candidateAnswer')
+const { examDetail } = require('../models/examDetail')
 const {checkExistingRightOption, checkExistingWrongOption, radioOrCheckBoxValue} = require('./questionLogic')
 
 const answerObject = (body,headers,weightage,status,submitStatus)=>{
@@ -134,7 +134,7 @@ const saveAllQuestions = async(req,res)=>{
 }
 
 const getExamTime = async(req,res)=>{
-    const examData = await examDetail.findOne({examCode:req.headers.examcode}).select({examStartTime:1})
+    const examData = await examDetail.findOne({examCode:req.headers.examcode})
     const submitStatus = await test.findOne({$and :[{candidateId:req.headers.id},{testCode:req.headers.examcode}]}).select({submitExam:1})
     if(submitStatus === null){
         res.status(200).send({examData,submitStatus:false})

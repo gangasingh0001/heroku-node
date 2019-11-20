@@ -1,4 +1,4 @@
-const { examDetail } = require('../Models/examDetail')
+const { examDetail } = require('../models/examDetail')
 const question = require('./questionController')
 
 const examDetails = async(req, res) => {

@@ -1,5 +1,5 @@
-const { user } = require('../Models/userRecord')
-const { admin } = require('../Models/adminLogin')
+const { user } = require('../models/userRecord')
+const { admin } = require('../models/adminLogin')
 const { SECRET } = require("../config/config")
 const jwt = require('jsonwebtoken');
 const sgMail = require('@sendgrid/mail');

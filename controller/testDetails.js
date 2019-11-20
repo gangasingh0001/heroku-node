@@ -1,5 +1,5 @@
-const { user } = require('../Models/userRecord')
-const {examDetais} =require('../Models/examDetail')
+const { user } = require('../models/userRecord')
+const {examDetais} =require('../models/examDetail')
 const testDetails= async(req,res)=>{
     try{
         
