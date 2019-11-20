@@ -1,6 +1,6 @@
-const { questionDetail } = require('../models/question')
-const { test } = require('../models/candidateAnswer')
-const { examDetail } = require('../models/examDetail')
+const { questionDetail } = require('../Models/question')
+const { test } = require('../Models/candidateAnswer')
+const { examDetail } = require('../Models/examDetail')
 const {checkExistingRightOption, checkExistingWrongOption, radioOrCheckBoxValue} = require('./questionLogic')
 
 const answerObject = (body,headers,weightage,status,submitStatus)=>{

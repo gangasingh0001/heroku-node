@@ -1,4 +1,4 @@
-var { questionDetail } = require('../models/question')
+var { questionDetail } = require('../Models/question')
 const excelToJson = require('convert-excel-to-json');
 
 const quesFromExcel = async (req, res) => {
