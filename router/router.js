@@ -145,7 +145,8 @@ module.exports = () => {
     })
 
     app.post('/exam/question', upload.single('questionImage'),middleware, (req, res)=> {
-        
+        if(req.headers.role="Examiner")
+        {
         if (req.file) {
             req.body['questionImage'] = '../public/assets/' + req.file.filename;
         } else {
@@ -153,6 +154,9 @@ module.exports = () => {
         }
 
         Users.question(req, res)
+    }
+    res.status(401).send('unauthorized')
+
     })
 
     //examiner will view questions
