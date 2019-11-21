@@ -76,7 +76,7 @@ module.exports = () => {
 
     //examiner will create exam details
     app.post('/exam', middleware, (req, res) => {
-        if(req.headers.role=="Admin")
+        if(req.headers.role=="Examiner")
         {
         Users.examDetail(req, res)
         }
