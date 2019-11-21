@@ -55,8 +55,13 @@ module.exports = () => {
         res.send(response)
     })
     // For uploading questions directly from excel file
-    app.post('/exam/questions/uploadExcel', upload.single('excelFile'), (req, res) => {
+    app.post('/exam/questions/uploadExcel',middleware, upload.single('excelFile'), (req, res) => {
+        if(req.headers.role=="Examiner")
+        {
         Users.quesFromExcel(req, res)
+        }
+        res.status(401).send('unauthorized')
+
     })
 
     app.post('/exam/accessKey', middleware, async(req, res) => {
@@ -76,7 +81,7 @@ module.exports = () => {
 
     //examiner will create exam details
     app.post('/exam', middleware, (req, res) => {
-        if(req.headers.role=="Admin")
+        if(req.headers.role=="Examiner")
         {
         Users.examDetail(req, res)
         }
@@ -140,7 +145,8 @@ module.exports = () => {
     })
 
     app.post('/exam/question', upload.single('questionImage'),middleware, (req, res)=> {
-        
+        if(req.headers.role="Examiner")
+        {
         if (req.file) {
             req.body['questionImage'] = '../public/assets/' + req.file.filename;
         } else {
@@ -148,6 +154,9 @@ module.exports = () => {
         }
 
         Users.question(req, res)
+    }
+    res.status(401).send('unauthorized')
+
     })
 
     //examiner will view questions
