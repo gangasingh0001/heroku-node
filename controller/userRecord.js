@@ -208,7 +208,7 @@ const userRecord = async(req, res) => {
 					.create({
 						body: otp,
 						from: '+12512548483',
-						to: req.body.phoneNumber
+						to: "+91"+req.body.phoneNumber
 					})
 					.then(message => console.log(message.sid));
 				}).catch((err)=>{
