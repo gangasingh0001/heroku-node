@@ -208,12 +208,13 @@ const userRecord = async(req, res) => {
 				await verify.create(verificationDetails).then(()=>{
 					client.messages
 					.create({
-						body: otp,
+						body: "please enter this otp "+otp,
 						from: '+12512548483',
 						to:phone
 					})
 					.then(message => console.log(message.sid));
 				}).catch((err)=>{
+					console.log("-------------------------error----------------------" + err);
 					return({
 						"message": err
 					})
