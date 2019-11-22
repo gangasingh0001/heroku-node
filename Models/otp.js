@@ -4,7 +4,8 @@ const Schema = mongoose.Schema
 const verification = new Schema({
     email : String,
     activeStatus:Boolean,
-    otp:Number
+    otp:Number,
+    phoneNumber:Number
 })
 
 const verify = mongoose.model('verification', verification)

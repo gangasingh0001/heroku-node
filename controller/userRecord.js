@@ -147,12 +147,12 @@ const adminLogin = async(req, res) => {
 			const accountSid = 'AC1a76f68d50dcfa8b46599145bb11d61d';
 			const authToken = 'a08ac3577fae6cb90ec1a0381bdbc353';
 			const client = require('twilio')(accountSid, authToken);
-			await verify.update({email:req.body.email},{"otp":otp},()=>{
+			await verify.update({email:req.body.email},{"otp":otp,"phoneNumber":req.body.phoneNumber},()=>{
 				client.messages
 					.create({
 						body: otp,
 						from: '+12512548483',
-						to: req.body.phoneNumber
+						to: "+91"+req.body.phoneNumber
 					})
 					.then(message => console.log(message.sid));
 			}).catch((err)=>{
@@ -201,7 +201,8 @@ const userRecord = async(req, res) => {
 				var verificationDetails = {
 					"email": userInfo.email,
 					"activeStatus": false,
-					"otp":otp
+					"otp":otp,
+					"phoneNumber":"+91"+req.body.password
 				}
 				verify.create(verificationDetails).then(()=>{
 					client.messages
