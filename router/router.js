@@ -265,5 +265,21 @@ module.exports = () => {
         const result = await Users.updateUser(req, res);
         res.send(result);
     })
+    app.get('/checkexaminer',middleware,async(req,res)=>{
+        if(req.headers.role=="Examiner")
+        {
+        debugger
+        res.send(200)
+        }
+        res.status(401).send("unauthorized")
+    })
+    app.get('/checkadmin',middleware,async(req,res)=>{
+        if(req.headers.role=="Admin")
+        {
+        debugger
+        res.send(200)
+        }
+        res.status(401).send("unauthorized")
+    })
     return app
 }
