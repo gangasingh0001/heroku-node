@@ -145,7 +145,7 @@ const adminLogin = async(req, res) => {
 		}else {
 			const otp = Math.floor(100000 + Math.random() * 900000);
 			const accountSid = 'AC1a76f68d50dcfa8b46599145bb11d61d';
-			const authToken = 'a08ac3577fae6cb90ec1a0381bdbc353';
+			const authToken = 'a48e94177384fa0db870f3ba2c05f9cc';
 			const client = require('twilio')(accountSid, authToken);
 			await verify.update({email:req.body.email},{"otp":otp,"phoneNumber":req.body.phoneNumber},()=>{
 				client.messages
@@ -196,7 +196,7 @@ const userRecord = async(req, res) => {
 				};
 				sgMail.send(msg);
 				const accountSid = 'AC1a76f68d50dcfa8b46599145bb11d61d';
-				const authToken = 'a08ac3577fae6cb90ec1a0381bdbc353';
+				const authToken = 'a48e94177384fa0db870f3ba2c05f9cc';
 				const client = require('twilio')(accountSid, authToken);
 				var verificationDetails = {
 					"email": userInfo.email,
