@@ -265,7 +265,7 @@ module.exports = () => {
         const result = await Users.updateUser(req, res);
         res.send(result);
     })
-    app.get('/checkexaminer',middleware,async(req,res)=>{
+    app.get('/checkexaminer',middleware,(req,res)=>{
         if(req.headers.role=="Examiner")
         {
         debugger
@@ -273,7 +273,7 @@ module.exports = () => {
         }
         res.status(401).send("unauthorized")
     })
-    app.get('/checkadmin',middleware,async(req,res)=>{
+    app.get('/checkadmin',middleware,(req,res)=>{
         if(req.headers.role=="Admin")
         {
         debugger
