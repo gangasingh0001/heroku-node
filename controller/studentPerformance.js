@@ -46,6 +46,8 @@ const studPerformance = async(req, res) => {
 }
 const allExamsMade = async(req, res) => {
     try {
+        if(req.headers.role=="Examiner")
+    {
         //console.log(req.headers.token)
         debugger
 
@@ -55,6 +57,10 @@ const allExamsMade = async(req, res) => {
         // console.log(exams)
 
         return exams
+    }
+    else{
+        res.status(401).send('unauthorized')
+    }
 
     } catch (error) {
         res.send(error)
@@ -63,10 +69,16 @@ const allExamsMade = async(req, res) => {
 const viewPerformance = async(req, res) => {
 
     try {
+        if(req.headers.role=="Examiner")
+        {
         let candidateRecord = await user.find({ accountType: 'Student' }).sort({ "_id": '1' })
             // let sortedvalues2 = values2.sort({ "_id": '1' })
             // console.log(candidateRecord)
-        res.send({ a: testRecord, b: candidateRecord })
+        res.status(200).send({ a: testRecord, b: candidateRecord })
+        }
+        else{
+            res.status(401).send('unauthorized');
+        }
     } catch (error) {
         res.send(error)
     }
