@@ -84,6 +84,7 @@ module.exports = () => {
         if(req.headers.role=="Examiner")
         {
         Users.examDetail(req, res)
+        res.status(200).send()
         }
         res.status(401).send('unauthorized')
     })
@@ -94,6 +95,7 @@ module.exports = () => {
         if(req.headers.role=="Examiner")
         {
             Users.viewExamDetail(req, res)
+            res.status(200).send()
         }
         res.status(401).send('unauthorized')
         })
@@ -281,5 +283,9 @@ module.exports = () => {
         }
         res.status(401).send("unauthorized")
     })
+    app.get('/userawake',middleware,(req,res)=>{
+        res.send(req.headers.role);
+
+   })
     return app
 }
