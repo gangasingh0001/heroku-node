@@ -81,22 +81,16 @@ module.exports = () => {
 
     //examiner will create exam details
     app.post('/exam', middleware, (req, res) => {
-        if(req.headers.role=="Examiner")
-        {
+    
         Users.examDetail(req, res)
         //res.status(200).send()
-        }
-        res.status(401).send('unauthorized')
     })
 
     //examiner will view exam
     app.get('/exam', middleware, (req, res) => {
         debugger
-        if(req.headers.role=="Examiner")
-        {
             Users.viewExamDetail(req, res)
-        }
-        res.status(401).send('unauthorized')
+        
         })
         //examiner will fetch particular exam detail
     app.get('/exam/:id', middleware, (req, res) => {

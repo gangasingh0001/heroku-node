@@ -3,6 +3,9 @@ const question = require('./questionController')
 
 const examDetails = async(req, res) => {
     try {
+        if(req.headers.role=="Examiner")
+        {
+    
 
         const checkExamCode = await examDetail.findOne({ examCode: req.body.examCode })
         if (checkExamCode != null) {
@@ -13,6 +16,11 @@ const examDetails = async(req, res) => {
             await examInformation.save()
             res.status(200).send({ message: 'exam information saved successful' })
         }
+    }
+    else{
+        req.status(401).send('unauthorized')
+    }
+    
     } catch (error) {
         console.log('error ', error)
         res.status(500).send(error)
@@ -21,11 +29,17 @@ const examDetails = async(req, res) => {
 
 const viewExamDetail = async(req, res) => {
     try {
+        if(req.headers.role=="Examiner")
+        {
         let values = await examDetail.find({ examinerId: req.headers.id })
         if (values.length != 0) {
             res.status(200).send(values)
         } else
             res.status(404).send('No Exam')
+    }
+    else{
+        res.status(401).send("unauthorized")
+    }
     } catch (error) {
         console.log(error)
     }
