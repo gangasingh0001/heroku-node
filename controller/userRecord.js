@@ -67,8 +67,7 @@ const loggedInDetails = async(req, res) => {
 	const det = await user.findOne({
 		"email": decoded.email
 	});
-	const name = det.name
-	return name;
+	return det;
 }
 
 const userDetails = async(req, res) => {
