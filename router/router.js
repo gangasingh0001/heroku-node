@@ -84,7 +84,7 @@ module.exports = () => {
         if(req.headers.role=="Examiner")
         {
         Users.examDetail(req, res)
-        res.status(200).send()
+        //res.status(200).send()
         }
         res.status(401).send('unauthorized')
     })
@@ -95,7 +95,6 @@ module.exports = () => {
         if(req.headers.role=="Examiner")
         {
             Users.viewExamDetail(req, res)
-            res.status(200).send()
         }
         res.status(401).send('unauthorized')
         })
