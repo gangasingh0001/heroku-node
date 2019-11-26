@@ -7,6 +7,8 @@ const jwt = require('jsonwebtoken');
 const { SECRET } = require("../config/config")
 const multer = require('multer')
 const path = require('path')
+const { otpVerification } = require('../controller/otp');
+const { sendOtpUserExist } = require('../controller/otp');
 //const reqPath = path.join(__dirname, '../../frontend/exminer/public/assets');
 var storage = multer.memoryStorage()
 var storage = multer.diskStorage({
@@ -47,6 +49,26 @@ module.exports = () => {
     app.post('/signUp', async(req, res) => {
         const result = await Users.userRecord(req, res)
         res.send(result)
+    })
+
+    app.post('/login/otp', async(req, res) => {
+        debugger
+        const result = await sendOtpUserExist(req)
+        if(result.code=="400"){
+            res.status(400).send("error")
+        }else {
+            res.status(200).send(result);
+        }
+    })
+
+    app.post('/login/otp/verification', async(req, res) => {
+        debugger
+        const result = await otpVerification(req)
+        if(result.code=="400"){
+            res.status(400).send('error')
+        }else {
+            res.status(200).send(result)
+        } 
     })
 
     //  for viewing the details of loggedin user

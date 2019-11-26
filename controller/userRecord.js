@@ -11,9 +11,8 @@ const jwt = require('jsonwebtoken');
 const sgMail = require('@sendgrid/mail');
 // const bcrypt = require('bcrypt')
 const bcrypt = require('bcryptjs')
-const {
-	verify
-} = require('../Models/otp');
+
+// const {sendOtp} = require("./otp");
 
 function decodeToken(req) {
 	const token = req.headers.token
@@ -127,11 +126,7 @@ const adminLogin = async(req, res) => {
 	const existUser = await admin.findOne({
 		email: req.body.email
 	});
-	const userOtpinfo = await verify.findOne({
-		email: req.body.email
-	})
-	if ((existUser)) {
-		if(userOtpinfo.activeStatus==true){
+	if (existUser) {
 			const pass = await bcrypt.compare(req.body.password, existUser.password);
 			if (pass) {
 				res.send({
@@ -142,27 +137,6 @@ const adminLogin = async(req, res) => {
 					"message": "Email or password is not valid"
 				});
 			}
-		}else {
-			const otp = Math.floor(100000 + Math.random() * 900000);
-			const accountSid = 'AC1a76f68d50dcfa8b46599145bb11d61d';
-			const authToken = 'a48e94177384fa0db870f3ba2c05f9cc';
-			const client = require('twilio')(accountSid, authToken);
-			await verify.update({email:req.body.email},{"otp":otp,"phoneNumber":req.body.phoneNumber},()=>{
-				client.messages
-					.create({
-						body: otp,
-						from: '+12512548483',
-						to: req.body.phoneNumber
-					})
-					.then(message => console.log(message.sid));
-			}).catch((err)=>{
-				return({
-					"message": err
-				})
-			})
-			
-		}
-		
 	} else {
 		res.send({
 			"message": "Email or password is not valid"
@@ -184,47 +158,13 @@ const userRecord = async(req, res) => {
 			var hash = bcrypt.hashSync(myPlaintesxtPassword, salt)
 			var role = 'Student'
 			userInfo.accountType = role
-			userInfo.password = hash; {
-				const otp = Math.floor(100000 + Math.random() * 900000);
+			userInfo.password = hash; 
 				user.create(userInfo)
-				sgMail.setApiKey(SENDGRID_API_KEY);
-				const msg = {
-					to: userInfo.email,
-					from: 'noreply@example.com',
-					subject: 'You have been successfully registered on CYGRP Exam Portal',
-					text: userInfo.name + '   Congrats ! YOU HAVE BEEN REGISTRED ON CYBERGROUP EXAM_PORTAL AS STUDENT',
-				};
-				sgMail.send(msg);
-				const accountSid = 'AC1a76f68d50dcfa8b46599145bb11d61d';
-				const authToken = 'a48e94177384fa0db870f3ba2c05f9cc';
-				const client = require('twilio')(accountSid, authToken);
-				const phone = req.body.password;
-				var verificationDetails = {
-					"email": userInfo.email,
-					"activeStatus": false,
-					"otp":otp,
-					"phoneNumber":phone
-				}
-				await verify.create(verificationDetails).then(()=>{
-					client.messages
-					.create({
-						body: "please enter this otp "+otp,
-						from: '+12512548483',
-						to:phone
-					})
-					.then(message => console.log(message.sid));
-				}).catch((err)=>{
-					console.log("-------------------------error----------------------" + err);
-					return({
-						"message": err
-					})
-				})
-				
 				return ({
 					"status": "200",
 					"message": "user registered"
 				})
-			}
+		
 		}
 	} catch (error) {
 		return ({
@@ -242,5 +182,6 @@ module.exports = {
 	adminLogin,
 	adminDetails,
 	loggedInDetails,
-	examinerUpdate
+	examinerUpdate,
+	user
 }
