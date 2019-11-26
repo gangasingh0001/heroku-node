@@ -147,23 +147,38 @@ const getExamTime = async(req,res)=>{
 
 const questions = async(req, res) => {
     try {
+        if(req.headers.role=="Examiner")
+        {
         let questionInformation = new questionDetail(req.body)
         await questionInformation.save()
         res.status(200).send({ msg: 'question saved successful' })
+        }
+        else{
+            res.send(401).status('unauthorized')
+        }
     } catch (error) {
         res.send({ error })
     }
 }
 
 const getQuestionDetails = async(req, res) => {
-    
+
     try {
+        if(req.headers.role=="Examiner")
+        {
         let values = await questionDetail.find({ examCode: decodeURIComponent(req.params.examCode) })
         if( values != 0 )
             res.status(200).send(values)
+        
         else
             res.status(404).send('Not Found')
-            } catch (error) {
+            }
+            else{
+                res.status(401).send('unauthorized')
+            }
+         }
+          catch (error) {
+
         
     }
 }
@@ -181,8 +196,14 @@ const fetchQuestionById = async(req, res) => {
 
 const editQuestion = async(req, res) => {
     try {
+        if(req.headers.role=="Examiner")
+        {
         await questionDetail.findByIdAndUpdate({ _id: req.params.id },req.body)
         res.status(200).send({ msg: 'question updated' })
+        }
+        else{
+            res.status(401).send('unauthorized')
+        }
     } catch (error) {
         res.status(404).send(error)
     }
@@ -200,9 +221,16 @@ const removeByExamCode = async(code) => {
 
 const removeQuestion = async(req, res) => {
     try {
+        if(req.headers.role=="Examiner")
+        {
         await questionDetail.findByIdAndDelete({ _id: req.params.id })
         res.status(200).send({ msg: 'Question Deleted Successfully' })
-    } catch (error) {
+    }
+    else{
+        res.send(401).status('unauthorized')
+    }
+}
+catch (error) {
         res.status(404).send(error)
     }
 }
