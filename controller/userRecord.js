@@ -150,48 +150,62 @@ const adminLogin = async(req, res) => {
 }
 
 const userRecord = async(req, res) => {
+	var status='';
+			var message='';
 	try {
+		
+			
+		const email = req.body.email
+		const body = req.body
 
-
-		var validator = require('mailgun-validate-email')('pubkey-a225fc837c8bc5960b76c7f4d13ec687')
-		const result = validator(req.body.email, async function (err, result,req) {
-			debugger
-			if (err) {
-				// email was not valid
-				return {
-					"status": "400",
-					"message": "email invalid"
-				}
-			} else {
-				//console.log(result);
-				// register the person for your service etc.
-				const existUser = await user.findOne({
-					email: req.body.email
-				});
-				if (existUser) {
-					return ("user Exist")
-				} else {
-					const userInfo = req.body;
-					var myPlaintesxtPassword = userInfo.password;
-					var salt = bcrypt.genSaltSync(10);
-					var hash = bcrypt.hashSync(myPlaintesxtPassword, salt)
-					var role = 'Student'
-					userInfo.accountType = role
-					userInfo.password = hash;
-					user.create(userInfo)
-					return ({
-						"status": "200",
-						"message": "user registered"
-					})
-
-				}
+		// var validator = require('mailgun-validate-email')('pubkey-a225fc837c8bc5960b76c7f4d13ec687')
+		// const val =await validator(req.body.email, async function (err, result) {
+			
+		// 	if (result.mailbox_verification=="unknown"||err) {
+		// 		// email was not valid
+				
+		// 			status ="400";
+		// 			message="invalid email"
+				
+		// 	}else {
+				
+		// 	}
+			
+		// 		//console.log(result);
+		// 		// register the person for your service etc.
+				
+			
+		// })
+		const existUser = await user.findOne({
+			email: email
+		});
+		if (existUser) {
+			return ("user Exist")
+		} else {
+			const userInfo = body;
+			var myPlaintesxtPassword = body.password;
+			var salt = bcrypt.genSaltSync(10);
+			var hash = bcrypt.hashSync(myPlaintesxtPassword, salt)
+			var role = 'Student'
+			userInfo.accountType = role
+			userInfo.password = hash;
+			user.create(userInfo)
+			return response ={
+				status:"200",
+			message:"sign up successful"
 			}
-		})
+			
+		}
+		
+		
+		
+		
 	} catch (error) {
 		return ({
 			error: error
 		})
 	}
+	
 }
 
 module.exports = {
