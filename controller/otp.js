@@ -164,18 +164,31 @@ const sendOtpUserExist = async(req) => {
 	// 	console.log(body);
 	// });
     
-	const sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+	// const sgMail = require('@sendgrid/mail');
+    // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     
-	const msg = {
-		to: req.headers.email,
-		from: 'gangaldh@yahoo.com',
-		subject: 'Your OTP to verify account',
-		text: 'Your one time password is '+otp+' Please enter it to verify your account',
-	};
-	sgMail.send(msg).catch((err)=>{
-		console.log(err);
-	});
+	// const msg = {
+	// 	to: req.headers.email,
+	// 	from: 'gangaldh@yahoo.com',
+	// 	subject: 'Your OTP to verify account',
+	// 	text: 'Your one time password is '+otp+' Please enter it to verify your account',
+	// };
+	// sgMail.send(msg).catch((err)=>{
+	// 	console.log(err);
+	// });
+
+	const mailgun = require("mailgun-js");
+const DOMAIN = 'mg.gangasinghofficial.me';
+const mg = mailgun({apiKey: process.env.MAILGUN_API_KEY, domain: DOMAIN});
+const data = {
+	from: 'gangaldh@yahoo.com',
+	to: req.headers.email,
+	subject: 'Your OTP to verify account',
+	text: 'Your one time password is '+otp+' Please enter it to verify your account'
+};
+mg.messages().send(data, function (error, body) {
+	console.log(body);
+});
 
 
 	const response = {

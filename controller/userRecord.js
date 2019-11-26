@@ -127,16 +127,16 @@ const adminLogin = async(req, res) => {
 		email: req.body.email
 	});
 	if (existUser) {
-			const pass = await bcrypt.compare(req.body.password, existUser.password);
-			if (pass) {
-				res.send({
-					"message": "Admin valid"
-				});
-			} else {
-				res.send({
-					"message": "Email or password is not valid"
-				});
-			}
+		const pass = await bcrypt.compare(req.body.password, existUser.password);
+		if (pass) {
+			res.send({
+				"message": "Admin valid"
+			});
+		} else {
+			res.send({
+				"message": "Email or password is not valid"
+			});
+		}
 	} else {
 		res.send({
 			"message": "Email or password is not valid"
@@ -146,26 +146,44 @@ const adminLogin = async(req, res) => {
 
 const userRecord = async(req, res) => {
 	try {
-		const existUser = await user.findOne({
-			email: req.body.email
+
+		var mailgun = require('mailgun-js')({
+			apiKey: api_key,
+			domain: domain
 		});
-		if (existUser) {
-			return ("user Exist")
-		} else {
-			const userInfo = req.body;
-			var myPlaintesxtPassword = userInfo.password;
-			var salt = bcrypt.genSaltSync(10);
-			var hash = bcrypt.hashSync(myPlaintesxtPassword, salt)
-			var role = 'Student'
-			userInfo.accountType = role
-			userInfo.password = hash; 
-				user.create(userInfo)
-				return ({
-					"status": "200",
-					"message": "user registered"
-				})
-		
-		}
+
+		mailgun.validate(req.body.email, async function (err, body) {
+			if (body && body.is_valid) {
+				// do something
+				const existUser = await user.findOne({
+					email: req.body.email
+				});
+				if (existUser) {
+					return ("user Exist")
+				} else {
+					const userInfo = req.body;
+					var myPlaintesxtPassword = userInfo.password;
+					var salt = bcrypt.genSaltSync(10);
+					var hash = bcrypt.hashSync(myPlaintesxtPassword, salt)
+					var role = 'Student'
+					userInfo.accountType = role
+					userInfo.password = hash;
+					user.create(userInfo)
+					return ({
+						"status": "200",
+						"message": "user registered"
+					})
+	
+				}
+			}
+			else{
+				return {
+					"status" : "400",
+					"message":"email invalid"
+				}
+			}
+		});
+
 	} catch (error) {
 		return ({
 			error: error
