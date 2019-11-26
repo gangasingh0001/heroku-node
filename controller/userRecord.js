@@ -1,3 +1,4 @@
+require('dotenv').config()
 const {
 	user
 } = require('../Models/userRecord')
@@ -11,6 +12,10 @@ const jwt = require('jsonwebtoken');
 const sgMail = require('@sendgrid/mail');
 // const bcrypt = require('bcrypt')
 const bcrypt = require('bcryptjs')
+// var mailgun = require('mailgun-js')({
+// 	apiKey: process.env.MAILGUN_API_KEY,
+// 	domain: 'sandbox7307e58fa8f64f25bd6b290a51736097.mailgun.org'
+// });
 
 // const {sendOtp} = require("./otp");
 
@@ -147,14 +152,19 @@ const adminLogin = async(req, res) => {
 const userRecord = async(req, res) => {
 	try {
 
-		var mailgun = require('mailgun-js')({
-			apiKey: api_key,
-			domain: domain
-		});
 
-		mailgun.validate(req.body.email, async function (err, body) {
-			if (body && body.is_valid) {
-				// do something
+		var validator = require('mailgun-validate-email')('pubkey-a225fc837c8bc5960b76c7f4d13ec687')
+		const result = validator(req.body.email, async function (err, result,req) {
+			debugger
+			if (err) {
+				// email was not valid
+				return {
+					"status": "400",
+					"message": "email invalid"
+				}
+			} else {
+				//console.log(result);
+				// register the person for your service etc.
 				const existUser = await user.findOne({
 					email: req.body.email
 				});
@@ -173,17 +183,10 @@ const userRecord = async(req, res) => {
 						"status": "200",
 						"message": "user registered"
 					})
-	
-				}
-			}
-			else{
-				return {
-					"status" : "400",
-					"message":"email invalid"
-				}
-			}
-		});
 
+				}
+			}
+		})
 	} catch (error) {
 		return ({
 			error: error
