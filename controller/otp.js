@@ -173,13 +173,10 @@ const sendOtpUserExist = async(req) => {
 		subject: 'Your OTP to verify account',
 		text: 'Your one time password is '+otp+' Please enter it to verify your account',
 	};
-<<<<<<< HEAD
 	sgMail.send(msg).catch((err)=>{
 		console.log(err);
 	});
-=======
-	sgMail.send(msg);
->>>>>>> 0441d33... updated
+
 
 	const response = {
 		"status": "200",
