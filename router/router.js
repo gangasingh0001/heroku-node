@@ -19,17 +19,17 @@ var storage = multer.diskStorage({
         callback(null,file.originalname);
       }
 });
-const reqPath = path.join(__dirname, '../../../frontend/exminer/public/assets');
-const storage1 = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, reqPath)
-    },
-    filename: function(req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname)
-    }
-})
+// const reqPath = path.join(__dirname, '../../../frontend/exminer/public/assets');
+// const storage1 = multer.diskStorage({
+//     destination: function(req, file, cb) {
+//         cb(null, reqPath)
+//     },
+//     filename: function(req, file, cb) {
+//         cb(null, Date.now() + '-' + file.originalname)
+//     }
+// })
 const upload = multer({storage:storage})
-var upload1 = multer({ limits: {fileSize: 2000000 },storage1: storage1 })
+var upload1 = multer({ limits: {fileSize: 8 *1024 * 1024 },storage: storage })
 // var upload = multer({ dest: 'upload/'});
 
 
@@ -146,7 +146,7 @@ module.exports = () => {
 
     app.post('/exam/question', upload.single('questionImage'),middleware, (req, res)=> {
         if (req.file) {
-            req.body['questionImage'] = '../public/assets/' + req.file.filename;
+            req.body['questionImage'] = '/backend/backend_nodejs/upload/' + req.file.filename;
         } else {
             req.body['questionImage'] = null
         }
@@ -175,7 +175,7 @@ module.exports = () => {
         
         console.log('edit pic',req.file)
         if (req.file) {
-            req.body['questionImage'] = '../public/assets/' + req.file.filename
+            req.body['questionImage'] = '/backend/backend_nodejs/upload/' + req.file.filename
         } else {
             req.body['questionImage'] = null
         }
