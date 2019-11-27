@@ -30,7 +30,7 @@ let i;
 
         }
         
-            questionDetail.insertMany(result.Sheet1,(err, docs) => {
+            await questionDetail.insertMany(result.Sheet1,(err, docs) => {
             if(err){
                 res.status(404).send({msg: 'File uploading failed'})
             }
