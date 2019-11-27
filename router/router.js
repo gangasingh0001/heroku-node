@@ -254,15 +254,20 @@ module.exports = () => {
         if(req.headers.role=="Examiner")
         {
         res.sendStatus(200)
+        }else{
+            res.status(401).send("unauthorized")
         }
-        res.status(401).send("unauthorized")
+        
     })
     app.get('/checkadmin',middleware,(req,res)=>{
         if(req.headers.role=="Admin")
         {
         res.sendStatus(200)
         }
-        res.status(401).send("unauthorized")
+        else {
+            res.status(401).send("unauthorized")
+        }
+        
     })
     app.get('/userawake',middleware,(req,res)=>{
         res.send(req.headers.role);
