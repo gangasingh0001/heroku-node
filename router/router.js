@@ -47,9 +47,12 @@ module.exports = () => {
     app.post('/exam/questions/uploadExcel',middleware, upload.single('excelFile'), (req, res) => {
         if(req.headers.role=="Examiner")
         {
-        Users.quesFromExcel(req, res)
+         Users.quesFromExcel(req, res)
         }
-        res.status(401).send('unauthorized')
+        else{
+             res.status(401).send('unauthorized')
+        }
+       
 
     })
 
