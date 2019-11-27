@@ -3,24 +3,15 @@ const question = require('./questionController')
 
 const examDetails = async(req, res) => {
     try {
-        if(req.headers.role=="Examiner")
-        {
-    
-
         const checkExamCode = await examDetail.findOne({ examCode: req.body.examCode })
-        if (checkExamCode != null) {
+        if (checkExamCode != null ) {
             res.status(409).send({ message: "Exam Code already exist" })
         } else {
             req.body.examinerId = req.headers.id
             let examInformation = new examDetail(req.body)
             await examInformation.save()
             res.status(200).send({ message: 'exam information saved successful' })
-        }
-    }
-    else{
-        req.status(401).send('unauthorized')
-    }
-    
+        }        
     } catch (error) {
         console.log('error ', error)
         res.status(500).send(error)
