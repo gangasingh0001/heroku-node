@@ -19,7 +19,7 @@ const quesFromExcel = async (req, res) => {
 
     })
     
-          let i;  
+let i;  
     try {
         if(req.headers.role=="Examiner")
         {
