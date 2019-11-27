@@ -45,15 +45,8 @@ module.exports = () => {
     })
     // For uploading questions directly from excel file
     app.post('/exam/questions/uploadExcel',middleware, upload.single('excelFile'), (req, res) => {
-        if(req.headers.role=="Examiner")
-        {
-         Users.quesFromExcel(req, res)
-        }
-        else{
-             res.status(401).send('unauthorized')
-        }
-       
-
+        Users.quesFromExcel(req, res)
+        
     })
 
     app.post('/exam/accessKey', middleware, async(req, res) => {
@@ -83,12 +76,7 @@ module.exports = () => {
 
     //examiner will view exam
     app.get('/exam', middleware, (req, res) => {
-        if(req.headers.role=="Examiner")
-        {
             Users.viewExamDetail(req, res)
-            res.status(200).send()
-        }
-        res.status(401).send('unauthorized')
         })
         //examiner will fetch particular exam detail
     app.get('/exam/:id', middleware, (req, res) => {
@@ -129,15 +117,11 @@ module.exports = () => {
         })
         // examiner will view details of all the students who gave that particular exam
     app.get('/examiner/exams/students', middleware, async(req, res) => {
-        if(req.headers.role="Examiner")
-        {
         const response = await Users.studPerformance(req, res)
-        }
-        res.status(401).send('unauthorized')
     })
 
     app.post('/exam/question', upload.single('questionImage'),middleware, (req, res)=> {
-        if(req.headers.role="Examiner")
+        if(req.headers.role=="Examiner")
         {
         if (req.file) {
            req.body['questionImage'] = '/backend/backend_nodejs/upload/' + req.file.filename;
