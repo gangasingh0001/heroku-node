@@ -163,7 +163,7 @@ module.exports = () => {
     })
 
     //examiner will edit questions
-    app.patch('/exam/question/:id', upload1.single('questionImage'), middleware, (req, res) => {
+    app.patch('/exam/question/:id', upload.single('questionImage'), middleware, (req, res) => {
         if(req.headers.role=="Examiner")
         {
         console.log('edit pic',req.file)
