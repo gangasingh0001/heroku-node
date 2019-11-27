@@ -250,14 +250,14 @@ module.exports = () => {
     app.get('/checkexaminer',middleware,(req,res)=>{
         if(req.headers.role=="Examiner")
         {
-        res.send(200)
+        res.sendStatus(200)
         }
         res.status(401).send("unauthorized")
     })
     app.get('/checkadmin',middleware,(req,res)=>{
         if(req.headers.role=="Admin")
         {
-        res.send(200)
+        res.sendStatus(200)
         }
         res.status(401).send("unauthorized")
     })
