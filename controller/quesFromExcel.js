@@ -21,7 +21,8 @@ const quesFromExcel = async (req, res) => {
     console.log('exam code is '+req.body.examCode)
           let i;  
     try {
-        
+        if(req.headers.role=="Examiner")
+        {
         for(i = 0;i<result.Sheet1.length;i++){
 
            result.Sheet1[i].examCode = req.body.examCode
@@ -35,7 +36,12 @@ const quesFromExcel = async (req, res) => {
             else{
                 res.status(200).send({ msg: 'Data from excel file saved' });
             }
-        })
+        
+      })
+    }
+    else{
+        res.status(401).send('authorized')
+    }
     } catch (err) {
         console.log(err)
     }
