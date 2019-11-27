@@ -9,7 +9,7 @@ const examDetails = async(req, res) => {
 
         const checkExamCode = await examDetail.findOne({ examCode: req.body.examCode })
         if (checkExamCode != null) {
-            res.status(409).send({ message: "Exam Code already exist" })
+            res.status(400).send({ message: "Exam Code already exist" })
         } else {
             req.body.examinerId = req.headers.id
             let examInformation = new examDetail(req.body)
