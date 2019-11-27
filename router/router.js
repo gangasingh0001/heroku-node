@@ -93,7 +93,7 @@ module.exports = () => {
 	app.get('/exam', middleware, (req, res) => {
 		if (req.headers.role == "Examiner") {
 			Users.viewExamDetail(req, res)
-			res.status(200).send()
+			
 		}
 		res.status(401).send('unauthorized')
 	})
