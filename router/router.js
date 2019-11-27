@@ -45,15 +45,8 @@ module.exports = () => {
     })
     // For uploading questions directly from excel file
     app.post('/exam/questions/uploadExcel',middleware, upload.single('excelFile'), (req, res) => {
-        if(req.headers.role=="Examiner")
-        {
-         Users.quesFromExcel(req, res)
-        }
-        else{
-             res.status(401).send('unauthorized')
-        }
-       
-
+        Users.quesFromExcel(req, res)
+        
     })
 
     app.post('/exam/accessKey', middleware, async(req, res) => {
