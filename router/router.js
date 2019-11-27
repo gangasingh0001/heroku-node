@@ -7,29 +7,21 @@ const jwt = require('jsonwebtoken');
 const { SECRET } = require("../config/config")
 const multer = require('multer')
 const path = require('path')
-//const reqPath = path.join(__dirname, '../../frontend/exminer/public/assets');
+const reqPath = path.join(__dirname, '../../../assets');
 var storage = multer.memoryStorage()
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, 'upload/')
+        if(file.originalname.includes(".xlsx"))
+            callback(null, 'upload/')
+        else
+            callback(null,reqPath)
     },
     filename: function (req, file, callback) {
-        callback(null,file.originalname);
-      }
-});
-const reqPath = path.join(__dirname, '../../../frontend/exminer/public/assets');
-const storage1 = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, reqPath)
-    },
-    filename: function(req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname)
+        callback(null,Date.now()+'-'+file.originalname);
     }
-})
-const upload = multer({storage:storage})
-var upload1 = multer({ limits: {fileSize: 2000000 },storage1: storage1 })
-// var upload = multer({ dest: 'upload/'});
+});
 
+const upload = multer({ limits: {fileSize: 1000000 },storage: storage })
 
 const createToken = require("../auth/authenticator").checkAuth;
 
