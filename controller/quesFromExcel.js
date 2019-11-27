@@ -18,7 +18,7 @@ const quesFromExcel = async (req, res) => {
         }
 
     })
-    console.log('exam code is '+req.body.examCode)
+    
           let i;  
     try {
         if(req.headers.role=="Examiner")
@@ -26,6 +26,7 @@ const quesFromExcel = async (req, res) => {
         for(i = 0;i<result.Sheet1.length;i++){
 
            result.Sheet1[i].examCode = req.body.examCode
+           result.Sheet1[i].questionImage=null
 
         }
         
