@@ -140,8 +140,10 @@ module.exports = () => {
         if(req.headers.role=="Examiner")
         {
         Users.getQuestionDetail(req, res)
+        }else{
+             res.status(401).send('unauthorized')
         }
-        res.status(401).send('unauthorized')
+       
     })
 
     //get particular question using its ID
