@@ -166,7 +166,7 @@ const getQuestionDetails = async(req, res) => {
     try {
         if(req.headers.role=="Examiner")
         {
-        let values = await questionDetail.find({ examCode: decodeURIComponent(req.params.examCode) })
+        let values = await questionDetail.find({ examCode: req.params.examCode })
         if( values != 0 )
             res.status(200).send(values)
         
