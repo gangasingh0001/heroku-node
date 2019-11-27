@@ -122,7 +122,7 @@ module.exports = () => {
         })
         // examiner will view details of all the students who gave that particular exam
     app.get('/examiner/exams/students', middleware, async(req, res) => {
-        if(req.headers.role="Examiner")
+        if(req.headers.role=="Examiner")
         {
         const response = await Users.studPerformance(req, res)
         }
@@ -130,7 +130,7 @@ module.exports = () => {
     })
 
     app.post('/exam/question', upload.single('questionImage'),middleware, (req, res)=> {
-        if(req.headers.role="Examiner")
+        if(req.headers.role=="Examiner")
         {
         if (req.file) {
            req.body['questionImage'] = '/backend/backend_nodejs/upload/' + req.file.filename;
