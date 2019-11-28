@@ -103,17 +103,18 @@ module.exports = () => {
 	app.get('/exam/:id', middleware, (req, res) => {
 		if (req.headers.role == "Examiner") {
 			Users.fetchExamDetail(req, res)
+		}else
+		{
+			res.status(401).send('unauthorized')
 		}
-		res.status(401).send('unauthorized')
-
 	})
 
 	//examiner will edit exam details
 	app.patch('/exam/:id', middleware, (req, res) => {
 		if (req.headers.role == "Examiner") {
 			Users.editExam(req, res)
-		}
-		res.status(401).send('unauthorized')
+		}else
+		{res.status(401).send('unauthorized')}
 	})
 
 	//examiner will delete exam using exam id
@@ -136,7 +137,6 @@ module.exports = () => {
 	app.get('/examiner/exams/students', async(req, res) => {
 		if (req.headers.role = "Examiner") {
             const response = await Users.studPerformance(req, res)
-            console.log(response.a+"----------------------------------------------------")
             res.status(200).send(response)
 		}else{
             res.status(401).send('unauthorized')
