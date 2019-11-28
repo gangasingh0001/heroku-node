@@ -156,6 +156,7 @@ module.exports = () => {
 
 			Users.question(req, res)
 		}
+		else
 		res.status(401).send('unauthorized')
 
 	})
@@ -265,7 +266,7 @@ module.exports = () => {
 	})
 	app.get('/checkadmin', middleware, (req, res) => {
 		if (req.headers.role == "Admin") {
-			res.status(200)
+			res.status(200).send()
 		} else {
 			res.status(401).send("unauthorized")
 		}

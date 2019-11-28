@@ -290,7 +290,7 @@ const questions = async(req, res) => {
 				msg: 'question saved successful'
 			})
 	} catch (error) {
-		res.send({
+		res.status(404).send({
 			error
 		})
 	}
