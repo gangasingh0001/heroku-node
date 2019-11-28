@@ -85,8 +85,10 @@ module.exports = () => {
 		if (req.headers.role == "Examiner") {
 			Users.examDetail(req, res)
 			//res.status(200).send()
-		}else
-		{res.status(401).send('unauthorized')}
+		}
+		else{
+			res.status(401).send('unauthorized')\
+		}
 	})
 
 	//examiner will view exam
@@ -113,8 +115,9 @@ module.exports = () => {
 	app.patch('/exam/:id', middleware, (req, res) => {
 		if (req.headers.role == "Examiner") {
 			Users.editExam(req, res)
-		}else
-		{res.status(401).send('unauthorized')}
+		}else{
+			res.status(401).send('unauthorized')
+		}
 	})
 
 	//examiner will delete exam using exam id
@@ -132,8 +135,9 @@ module.exports = () => {
 		if (req.headers.role == "Examiner") {
 			const response = await Users.studentPerformance(req, res)
 			res.send(response)
-		}
+		}else{
 		res.status(401).send('unauthorized')
+		}
 	})
 	// examiner will view details of all the students who gave that particular exam
 	app.get('/examiner/exams/students', async(req, res) => {
@@ -184,8 +188,9 @@ module.exports = () => {
 				req.body['questionImage'] = null
 			}
 			Users.editQuestion(req, res)
-		}
+		}else{
 		res.status(401).send('unauthorized')
+		}
 	})
 
 	//examiner will delete question by id
@@ -193,8 +198,9 @@ module.exports = () => {
 		if (req.headers.role == "Examiner") {
 			Users.removeQuestion(req, res)
 		}
-		else
-		{res.status(401).send('unauthorized')}
+		else{
+			res.status(401).send('unauthorized')
+		}
 	})
 
 	//candidates will view quesions using accesskey
@@ -214,7 +220,7 @@ module.exports = () => {
 		if (req.headers.role == "Admin") {
 			const response = await Users.adminDetails(req, res)
 			res.send(response);
-		}
+		}else
 		res.status(401).send('unauthorized')
 	})
 
@@ -223,7 +229,7 @@ module.exports = () => {
 		if (req.headers.role == "Admin") {
 			const result = await Users.fetchData(req, res)
 			res.send(result);
-		}
+		}else
 		res.status(401).send('unauthorized')
 	})
 	//admin will delete examiner using id of examiner
@@ -231,7 +237,7 @@ module.exports = () => {
 		if (req.headers.role == "Admin") {
 			const result = Users.examinerDelete(req, res)
 			res.send(result)
-		}
+		}else
 		res.status(401).send('unauthorized')
 	})
 	//admin will view test created by each examiner using their id
@@ -239,7 +245,7 @@ module.exports = () => {
 		if (req.headers.role == "Admin") {
 			const result = await Users.testDetails(req, res)
 			res.send(result);
-		}
+		}else
 		res.status(401).send('unauthorized')
 	})
 
@@ -247,7 +253,7 @@ module.exports = () => {
 		if (req.headers.role == "Examiner") {
 			const result = await Users.examinerUpdate(req, res)
 			res.send(result)
-		}
+		}else
 		res.status(401).send('unauthorized')
 	})
 	// admin update examiner info
@@ -256,7 +262,6 @@ module.exports = () => {
 		res.send(result);
 	})
 	app.get('/checkexaminer',middleware, (req, res) => {
-		debugger
 		if (req.headers.role == "Examiner") {
 			res.status(200).send();
 		} else {
