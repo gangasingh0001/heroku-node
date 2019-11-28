@@ -254,9 +254,10 @@ module.exports = () => {
 		const result = await Users.updateUser(req, res);
 		res.send(result);
 	})
-	app.get('/checkexaminer', middleware, (req, res) => {
+	app.get('/checkexaminer',middleware, (req, res) => {
+		debugger
 		if (req.headers.role == "Examiner") {
-			res.sendStatus(200)
+			res.status(200).send();
 		} else {
 			res.status(401).send("unauthorized")
 		}
