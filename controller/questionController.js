@@ -354,16 +354,12 @@ const removeByExamCode = async(code) => {
 
 const removeQuestion = async(req, res) => {
 	try {
-		if (req.headers.role == "Examiner") {
-			await questionDetail.findByIdAndDelete({
-				_id: req.params.id
-			})
-			res.status(200).send({
-				msg: 'Question Deleted Successfully'
-			})
-		} else {
-			res.send(401).status('unauthorized')
-		}
+		await questionDetail.findByIdAndDelete({
+			_id: req.params.id
+		})
+		res.status(200).send({
+			msg: 'Question Deleted Successfully'
+		})
 	} catch (error) {
 		res.status(404).send(error)
 	}

@@ -122,7 +122,9 @@ module.exports = () => {
 		if (req.headers.role == "Examiner") {
 			Users.removeExam(req, res)
 		}
-		res.status(401).send('unauthorized')
+		else{
+			res.status(401).send('unauthorized')
+		}
 	})
 
 	//examiner will view exams he has created
@@ -175,13 +177,11 @@ module.exports = () => {
 	//examiner will edit questions
 	app.patch('/exam/question/:id', upload.single('questionImage'), middleware, (req, res) => {
 		if (req.headers.role == "Examiner") {
-			console.log('edit pic', req.file)
 			if (req.file) {
 				req.body['questionImage'] = '/backend/backend_nodejs/upload/' + req.file.filename;
 			} else {
 				req.body['questionImage'] = null
 			}
-			console.log(req.file)
 			Users.editQuestion(req, res)
 		}
 		res.status(401).send('unauthorized')
@@ -192,7 +192,8 @@ module.exports = () => {
 		if (req.headers.role == "Examiner") {
 			Users.removeQuestion(req, res)
 		}
-		res.status(401).send('unauthorized')
+		else
+		{res.status(401).send('unauthorized')}
 	})
 
 	//candidates will view quesions using accesskey
