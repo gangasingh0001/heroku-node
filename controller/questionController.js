@@ -284,15 +284,11 @@ const getExamTime = async(req, res) => {
 
 const questions = async(req, res) => {
 	try {
-		if (req.headers.role == "Examiner") {
 			let questionInformation = new questionDetail(req.body)
 			await questionInformation.save()
 			res.status(200).send({
 				msg: 'question saved successful'
 			})
-		} else {
-			res.send(401).status('unauthorized')
-		}
 	} catch (error) {
 		res.send({
 			error
@@ -303,7 +299,6 @@ const questions = async(req, res) => {
 const getQuestionDetails = async(req, res) => {
 
 	try {
-		if (req.headers.role == "Examiner") {
 			let values = await questionDetail.find({
 				examCode: req.params.examCode
 			})
@@ -312,11 +307,9 @@ const getQuestionDetails = async(req, res) => {
 
 			else
 				res.status(404).send('Not Found')
-		} else {
-			res.status(401).send('unauthorized')
-		}
+		
 	} catch (error) {
-
+		res.status(404).send('Not Found')
         console.log(error)
 	}
 }
@@ -336,16 +329,12 @@ const fetchQuestionById = async(req, res) => {
 
 const editQuestion = async(req, res) => {
 	try {
-		if (req.headers.role == "Examiner") {
-			await questionDetail.findByIdAndUpdate({
-				_id: req.params.id
-			}, req.body)
-			res.status(200).send({
-				msg: 'question updated'
-			})
-		} else {
-			res.status(401).send('unauthorized')
-		}
+		await questionDetail.findByIdAndUpdate({
+			_id: req.params.id
+		}, req.body)
+		res.status(200).send({
+			msg: 'question updated'
+		})
 	} catch (error) {
 		res.status(404).send(error)
 	}
