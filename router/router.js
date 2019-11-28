@@ -265,7 +265,7 @@ module.exports = () => {
 	})
 	app.get('/checkadmin', middleware, (req, res) => {
 		if (req.headers.role == "Admin") {
-			res.sendStatus(200)
+			res.status(200)
 		} else {
 			res.status(401).send("unauthorized")
 		}
