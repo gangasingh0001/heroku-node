@@ -25,7 +25,11 @@ const studPerformance = async(req, res) => {
             const id1 = result[i].candidateId;
             const idDetails = await user.findById(id1).sort({ "_id": '1' })
                 // console.log(idDetails)
-            studs.push(idDetails);
+            const stuDetails = new Object()
+            stuDetails.email = idDetails.email
+            stuDetails.name = idDetails.name
+            stuDetails.phoneNumber = idDetails.phoneNumber
+            studs.push(stuDetails);
             i++;
         }
         // const sortedStud = studs.sort({ '_id': '1' })
