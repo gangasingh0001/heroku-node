@@ -6,11 +6,9 @@ const { questionDetail } = require('../Models/question')
 const studPerformance = async(req, res) => {
     try {
         // debugger
-        console.log('_________________')
+        // console.log('_________________')
             // console.log(req.headers.studentid)
-         
         const examId = req.headers.examid
-
         let sum = await questionDetail.aggregate([{$match:{examCode:examId}},
             {$group:{_id:null,total:{$sum:"$weightage"}}}])
             console.log(sum[0].total)
