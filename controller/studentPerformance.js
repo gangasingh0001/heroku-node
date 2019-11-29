@@ -36,11 +36,11 @@ const studPerformance = async(req, res) => {
         //console.log(id)
         //console.log(result)
         //   return idDetails
-        res.send({ a: studs, b: result, c:sum[0].total})
+        return ({ a: studs, b: result, c:sum[0].total})
             //let testRecord = await test.find()({ "candidateId": '1' })
 
     } catch (error) {
-        res.send(error)
+        return ({error : error})
 
     }
 }
