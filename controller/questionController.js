@@ -284,15 +284,17 @@ const getExamTime = async(req, res) => {
 
 const questions = async(req, res) => {
 	try {
+		if( req.body.examCode != null){
 			let questionInformation = new questionDetail(req.body)
 			await questionInformation.save()
 			res.status(200).send({
 				msg: 'question saved successful'
 			})
+		}else{
+			res.status(422).send({msg: 'Invalid examcode'})
+		}
 	} catch (error) {
-		res.status(404).send({
-			error
-		})
+		res.status(404).send(error)
 	}
 }
 
