@@ -14,7 +14,7 @@ const bcrypt = require('bcryptjs')
 const {
 	verify
 } = require('../Models/otp');
-
+var SENDGRID_API_KEY = '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'
 function decodeToken(req) {
 	const token = req.headers.token
 	const decoded = jwt.verify(token, new Buffer(SECRET, 'base64'));
