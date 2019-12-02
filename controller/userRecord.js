@@ -67,7 +67,13 @@ const loggedInDetails = async(req, res) => {
 	const det = await user.findOne({
 		"email": decoded.email
 	});
-	return det;
+	const obj = new Object()
+	obj.email = det.email
+	obj.name = det.name
+	obj.collegeName = det.collegeName
+	obj.phoneNumber = det.phoneNumber
+	console.log(obj)
+	return obj;
 }
 
 const userDetails = async(req, res) => {
@@ -85,10 +91,10 @@ const userDetails = async(req, res) => {
 const examinerUpdate = async(req, res) => {
 	try {
 		const body = req.body
-		const myPlaintextPassword = body.password;
-		var salt = bcrypt.genSaltSync(10);
-		var hash = bcrypt.hashSync(myPlaintextPassword, salt)
-		body.password = hash;
+		// const myPlaintextPassword = body.password;
+		// var salt = bcrypt.genSaltSync(10);
+		// var hash = bcrypt.hashSync(myPlaintextPassword, salt)
+		// body.password = hash;
 		const query = await user.findOneAndUpdate({
 			email: req.body.email
 		}, body)
