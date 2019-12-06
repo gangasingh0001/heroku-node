@@ -35,6 +35,7 @@ const checkExistingRightOption = async(option, qId, studentId, updatedScore) => 
 }
 
 
+
 //Check if user have submit the wrong correct option again and update the database
 const checkExistingWrongOption = async(option, qId, studentId, updatedScore) => {
     let status = await test.findOne({ candidateId: studentId }, { answers: { $elemMatch: { questionId: qId } } })

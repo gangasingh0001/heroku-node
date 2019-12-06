@@ -71,101 +71,57 @@ const testQuestions = async(req, res) => {
 }
 
 //Save Correct Answer to the database when user clicks on Submit Button
-const saveCorrectOption = async(req, checkAnswer, existingAnswer) => {
-	if (existingAnswer === null) {
-		let answerDetail = answerObject(req.body, req.headers, checkAnswer.weightage, true, false)
-		await answerDetail.save()
-	} else {
-		let existingScore = await test.findOne({
-			'testCode': req.body.code
-		}).select({
-			totalScore: 1
-		})
-		let updatedScore = existingScore.totalScore + checkAnswer.weightage
-		let existingAnswerStatus = await checkExistingRightOption(req.body.checkedOption, req.body.qId, req.headers.id, updatedScore)
-		if (!existingAnswerStatus) {
-			await test.findOneAndUpdate({
-				$and: [{
-					candidateId: req.headers.id
-				}, {
-					testCode: req.body.code
-				}]
-			}, {
-				$push: {
-					answers: {
-						answerSubmitted: req.body.checkedOption,
-						questionId: req.body.qId,
-						correctStatus: true
-					}
-				},
-				$set: {
-					totalScore: updatedScore
-				}
-			}, {
-				new: true
-			})
-		}
-	}
+const saveCorrectOption = async(req,checkAnswer,existingAnswer)=>{
+    if(existingAnswer === null){
+        let answerDetail = answerObject(req.body, req.headers, checkAnswer.weightage,true,false)
+        await answerDetail.save()
+    }
+    else{
+        let existingScore = await test.findOne({'testCode':req.body.code}).select({totalScore:1})
+        let updatedScore = existingScore.totalScore+checkAnswer.weightage
+        let existingAnswerStatus = await checkExistingRightOption(req.body.checkedOption,req.body.qId,req.headers.id,updatedScore)
+        if(!existingAnswerStatus){
+            await test.findOneAndUpdate(
+                {$and:[{candidateId:req.headers.id},{testCode:req.body.code}]},
+                {   
+                    $push: {answers:{answerSubmitted: req.body.checkedOption,questionId: req.body.qId, correctStatus: true}},
+                    $set:{totalScore:updatedScore}
+                },
+                {new: true}
+            )
+        }
+    }
 }
 
 //Saving Incorrect Option to the database when user click on submit option
-const saveIncorrectOption = async(req, checkAnswer, existingAnswer) => {
-	if (req.body.checkedOption === undefined) req.body.checkedOption = null
-	if (existingAnswer === null) {
-		let answerDetail = answerObject(req.body, req.headers, 0, false, false)
-		await answerDetail.save()
-	} else {
-		let existingScore = await test.findOne({
-			'testCode': req.body.code
-		}).select({
-			totalScore: 1
-		})
-		let updatedScore = existingScore.totalScore - checkAnswer.weightage
-		let existingAnswerStatus = await checkExistingWrongOption(req.body.checkedOption, req.body.qId, req.headers.id, updatedScore)
-		if (!existingAnswerStatus) {
-			await test.findOneAndUpdate({
-				$and: [{
-					candidateId: req.headers.id
-				}, {
-					testCode: req.body.code
-				}]
-			}, {
-				$push: {
-					answers: {
-						answerSubmitted: req.body.checkedOption,
-						questionId: req.body.qId,
-						correctStatus: false
-					}
-				}
-			})
-		}
-	}
+const saveIncorrectOption = async(req,checkAnswer,existingAnswer)=>{
+    if(req.body.checkedOption  === undefined) req.body.checkedOption = null
+    if(existingAnswer === null){
+        let answerDetail = answerObject(req.body,req.headers,0,false,false)
+        await answerDetail.save()
+    } else {
+        let existingScore = await test.findOne({ 'testCode': req.body.code }).select({ totalScore: 1 })
+        let updatedScore = existingScore.totalScore - checkAnswer.weightage
+        let existingAnswerStatus = await checkExistingWrongOption(req.body.checkedOption, req.body.qId, req.headers.id, updatedScore)
+        if (!existingAnswerStatus) {
+            await test.findOneAndUpdate({ $and: [{ candidateId: req.headers.id }, { testCode: req.body.code }] }, {
+                $push: { answers: { answerSubmitted: req.body.checkedOption, questionId: req.body.qId, correctStatus: false } }
+            })
+        }
+    }
 }
 
 const saveCandidateAnswers = async(req, res) => {
-	req.body.checkedOption = radioOrCheckBoxValue(req.body)
-	let checkAnswer = await questionDetail.findById(req.body.qId).select({
-		"answer": 1,
-		"weightage": 1
-	})
-	let existingAnswer = await test.findOne({
-		$and: [{
-			candidateId: req.headers.id
-		}, {
-			testCode: req.body.code
-		}]
-	})
-	if (checkAnswer.answer === req.body.checkedOption) {
-		await saveCorrectOption(req, checkAnswer, existingAnswer)
-		res.status(200).send({
-			"msg": "Saved Successfully"
-		})
-	} else {
-		await saveIncorrectOption(req, checkAnswer, existingAnswer)
-		res.status(200).send({
-			"msg": "Saved Successfully"
-		})
-	}
+    req.body.checkedOption = radioOrCheckBoxValue(req.body)
+    let checkAnswer = await questionDetail.findById(req.body.qId).select({ "answer": 1, "weightage": 1 })
+  let existingAnswer = await test.findOne({ $and: [{ candidateId: req.headers.id }, { testCode: req.body.code }] })
+    if (checkAnswer.answer === req.body.checkedOption) {
+        await saveCorrectOption(req, checkAnswer, existingAnswer)
+        res.status(200).send({ "msg": "Saved Successfully" })
+    } else {
+        await saveIncorrectOption(req, checkAnswer, existingAnswer)
+        res.status(200).send({ "msg": "Saved Successfully" })
+    }
 }
 
 const checkAccessKey = async(req, res) => {
