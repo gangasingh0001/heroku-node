@@ -14,6 +14,7 @@ const {
 const multer = require('multer')
 const path = require('path')
 const reqPath = path.join(__dirname, '../../../assets');
+const aws = require('../aws/aws')
 var storage = multer.memoryStorage()
 var storage = multer.diskStorage({
 	destination: function (req, file, callback) {
