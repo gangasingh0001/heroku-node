@@ -61,8 +61,6 @@ module.exports = () => {
 		} else {
 			res.status(401).send('unauthorized')
 		}
-
-
 	})
 
 	app.post('/exam/accessKey', middleware, async(req, res) => {
@@ -150,14 +148,13 @@ module.exports = () => {
 		
 	})
 
-	app.post('/exam/question', upload.single('questionImage'), middleware, (req, res) => {
+	app.post('/exam/question', upload.single('questionImage'), middleware, async (req, res) => {
 		if (req.headers.role = "Examiner") {
-			if (req.file) {
-				req.body['questionImage'] = '/backend/backend_nodejs/upload/' + req.file.filename;
+				if (req.file) {
+				await aws.uploadFile(req)
 			} else {
 				req.body['questionImage'] = null
 			}
-
 			Users.question(req, res)
 		}
 		else
@@ -180,12 +177,10 @@ module.exports = () => {
 	})
 
 	//examiner will edit questions
-	app.patch('/exam/question/:id', upload.single('questionImage'), middleware, (req, res) => {
+	app.patch('/exam/question/:id', upload.single('questionImage'), middleware, async (req, res) => {
 		if (req.headers.role == "Examiner") {
 			if (req.file) {
-				req.body['questionImage'] = '/backend/backend_nodejs/upload/' + req.file.filename;
-			} else {
-				req.body['questionImage'] = null
+				await aws.uploadFile(req)
 			}
 			Users.editQuestion(req, res)
 		}else{
