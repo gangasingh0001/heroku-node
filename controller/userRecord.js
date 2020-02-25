@@ -201,8 +201,7 @@ const userRecord = async(req, res) => {
 					text: userInfo.name + '   Congrats ! YOU HAVE BEEN REGISTRED ON CYBERGROUP EXAM_PORTAL AS STUDENT',
 				};
 				sgMail.send(msg);
-				const accountSid = 'AC1a76f68d50dcfa8b46599145bb11d61d';
-				const authToken = 'a48e94177384fa0db870f3ba2c05f9cc';
+				
 				const client = require('twilio')(accountSid, authToken);
 				const phone = req.body.password;
 				var verificationDetails = {
